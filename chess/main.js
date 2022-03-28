@@ -51,8 +51,8 @@ var whitePieces = [
 	pieces.WhiteKnight, pieces.WhiteRook,
 ]
 for (var i = 0; i < 8; i++) {
-	ctx.fillText(String.fromCharCode(whitePieces[i]), dx+(i*80), dy+480);
+	ctx.fillText(String.fromCharCode(pieces.WhitePawn), dx+(i*80), dy+480);
 }
 for (var i = 0; i < 8; i++) {
-	ctx.fillText(String.fromCharCode(pieces.WhitePawn), dx+(i*80), dy+560);
+	ctx.fillText(String.fromCharCode(whitePieces[i]), dx+(i*80), dy+560);
 }
