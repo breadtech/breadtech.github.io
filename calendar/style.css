@@ -1,5 +1,5 @@
-@page {
-	margin: 10px;
+@media print {
+	@page { margin: 0.5in 0; }
 }
 
 table, th, td {
