@@ -1,5 +1,5 @@
 @media print {
-	@page { margin: 0.25in; }
+	@page { margin: 0.5in 0.25in; }
 }
 
 table, th, td {
