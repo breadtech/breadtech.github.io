@@ -25,23 +25,40 @@ const monthNames = [
 const render = (from = 1, to = 52) => {
     const day = getMondayFromWeekNum(2022, from);
     let month = monthNames[day.getMonth()];
+    let year = day.getFullYear();
     for (let i = from; i <= to; i++) {
         const week = [];
-        let notes = i.toString();
-        let monthChange = false;
+        let [notes, monthChange, yearChange] =
+            [i.toString(), false, false];
 
         // Construct week.
         for (let j = 0; j < 7; j++) {
             week.push(day.getDate());
             day.setDate(day.getDate() + 1);   
+
+            // Check next month.
             const nextMonth = monthNames[day.getMonth()];
             if (month !== nextMonth) {
                 month = nextMonth;
                 monthChange = true;
+
+                // Check next year.
+                // qq: Why is the year check nested in the month check?
+                const nextYear = day.getFullYear();
+                if (year !== nextYear) {
+                    year = nextYear;
+                    yearChange = true;
+                }
             }
+
         }
         // Make notes display month if change or first.
-        if (monthChange || i === from) notes = month;
+        if (monthChange || i === from) {
+            notes = month;
+            if (yearChange || i === from) {
+                notes = year.toString() + " " + notes
+            }
+        }
 
         appendWeek(week, notes);
     }
