@@ -22,7 +22,7 @@ const monthNames = [
     "October", "November", "December",
 ];
 
-const render = (fromYear, fromWeek, toYear, toWeek) => {
+const renderCalendar = (fromYear, fromWeek, toYear, toWeek) => {
     const day = getMondayFromWeekNum(fromYear, fromWeek);
 
     let [iYear, iMonth, iWeek] =
@@ -68,6 +68,28 @@ const render = (fromYear, fromWeek, toYear, toWeek) => {
     }
 }
 
+const resetCalendar = () => {
+    $(".cal").find("tr:gt(0)").remove();
+    $(".notes").find("tr:gt(0)").remove();
+}
+
+const updateCalendar = () => {
+    resetCalendar();
+    renderCalendar(
+        parseInt(inputFromYear.val()),
+        parseInt(inputFromWeek.val()),
+        parseInt(inputToYear.val()),
+        parseInt(inputToWeek.val()),
+    );
+}
+
+let inputFromYear, inputFromWeek, inputToYear, inputToWeek;
 $(document).ready(() => {
-    render(2022, 36, 2023, 1);
+    [inputFromYear, inputFromWeek, inputToYear, inputToWeek] =
+        [$("#fromYear"), $("#fromWeek"), $("#toYear"), $("#toWeek")];
+    inputFromYear.change(updateCalendar);
+    inputFromWeek.change(updateCalendar);
+    inputToYear.change(updateCalendar);
+    inputToWeek.change(updateCalendar);
+    updateCalendar();
 })
