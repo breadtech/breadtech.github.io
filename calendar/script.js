@@ -8,7 +8,7 @@ const appendWeek = (days = [], notes = ".") => {
 };
 
 const getMondayFromWeekNum = (year, weekNum) => {
-    var monday = new Date(year, 0, (1 + (weekNum - 1) * 7));
+    const monday = new Date(year, 0, (1 + (weekNum - 1) * 7));
     while (monday.getDay() !== 1) {
         monday.setDate(monday.getDate() - 1);
     }
@@ -83,9 +83,14 @@ const updateCalendar = () => {
     ];
 
     // Check bounds.
-    if (fromYear >= toYear && fromWeek >= toWeek) { return };
+    if (fromYear >= toYear && fromWeek > toWeek) { return };
     resetCalendar();
     renderCalendar(fromYear, fromWeek, toYear, toWeek);
+}
+
+const dateToWeekNum = (date) => {
+    const janone = new Date(date.getFullYear(), 0, 1);
+    return Math.ceil((((date - janone) / 86400000) + janone.getDay() + 1) / 7);
 }
 
 let inputFromYear, inputFromWeek, inputToYear, inputToWeek;
@@ -96,5 +101,14 @@ $(document).ready(() => {
     inputFromWeek.change(updateCalendar);
     inputToYear.change(updateCalendar);
     inputToWeek.change(updateCalendar);
+
+    // Set input fields to current date + 4 months.
+    const [from, to] = [new Date(), new Date()];
+    to.setMonth(from.getMonth() + 4);
+    inputFromYear.val(from.getFullYear());
+    inputFromWeek.val(dateToWeekNum(from));
+    inputToYear.val(to.getFullYear());
+    inputToWeek.val(dateToWeekNum(to));
+
     updateCalendar();
 })
