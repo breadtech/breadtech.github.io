@@ -22,14 +22,15 @@ const monthNames = [
     "October", "November", "December",
 ];
 
-const render = (from = 1, to = 52) => {
-    const day = getMondayFromWeekNum(2022, from);
-    let month = monthNames[day.getMonth()];
-    let year = day.getFullYear();
-    for (let i = from; i <= to; i++) {
+const render = (fromYear, fromWeek, toYear, toWeek) => {
+    const day = getMondayFromWeekNum(fromYear, fromWeek);
+
+    let [iYear, iMonth, iWeek] =
+        [fromYear, monthNames[day.getMonth()], fromWeek];
+    while (iYear < toYear || iWeek < toWeek) {
         const week = [];
         let [notes, monthChange, yearChange] =
-            [i.toString(), false, false];
+            [iWeek.toString(), false, false];
 
         // Construct week.
         for (let j = 0; j < 7; j++) {
@@ -38,32 +39,35 @@ const render = (from = 1, to = 52) => {
 
             // Check next month.
             const nextMonth = monthNames[day.getMonth()];
-            if (month !== nextMonth) {
-                month = nextMonth;
+            if (iMonth !== nextMonth) {
+                iMonth = nextMonth;
                 monthChange = true;
 
                 // Check next year.
                 // qq: Why is the year check nested in the month check?
                 const nextYear = day.getFullYear();
-                if (year !== nextYear) {
-                    year = nextYear;
-                    yearChange = true;
+                if (iYear !== nextYear) {
+                    [iYear, iWeek, yearChange] =
+                        [nextYear, 1, true];
                 }
             }
 
         }
+
         // Make notes display month if change or first.
-        if (monthChange || i === from) {
-            notes = month;
-            if (yearChange || i === from) {
-                notes = year.toString() + " " + notes
+        const isFirst = iYear == fromYear && iWeek == fromWeek;
+        if (monthChange || isFirst) {
+            notes = iMonth;
+            if (yearChange || isFirst) {
+                notes = iYear.toString() + " " + notes
             }
         }
 
         appendWeek(week, notes);
+        iWeek++;
     }
 }
 
 $(document).ready(() => {
-    render(36, 53);
+    render(2022, 36, 2023, 1);
 })
