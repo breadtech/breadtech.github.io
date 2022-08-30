@@ -74,13 +74,18 @@ const resetCalendar = () => {
 }
 
 const updateCalendar = () => {
-    resetCalendar();
-    renderCalendar(
+    const [fromYear, fromWeek, toYear, toWeek] =
+    [
         parseInt(inputFromYear.val()),
         parseInt(inputFromWeek.val()),
         parseInt(inputToYear.val()),
         parseInt(inputToWeek.val()),
-    );
+    ];
+
+    // Check bounds.
+    if (fromYear >= toYear && fromWeek >= toWeek) { return };
+    resetCalendar();
+    renderCalendar(fromYear, fromWeek, toYear, toWeek);
 }
 
 let inputFromYear, inputFromWeek, inputToYear, inputToWeek;
